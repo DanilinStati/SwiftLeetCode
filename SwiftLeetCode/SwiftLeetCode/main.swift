@@ -8,23 +8,30 @@
 import Foundation
 
 struct Solution {
-    func twoSum(_ nums: [Int], _ target: Int) -> [Int] {
-        // 1.Создаем словарь в которой будем добавлять значения
-        // Ключом будет nums[i], а значением его индекс
-        var dict: [Int: Int] = [:]
-        for (index, value) in nums.enumerated() {
-            // 2.Если в нашем словаре уже есть значение которое равно разности нашего таргета и значения из массива nums
-            // То мы возврашаем значение из словаря и индекс значения из цикла
-            if let val = dict[target - value] {
-                return [val, index]
-            } else {
-                // 3.Добавляем в словарь значение
-                dict[value] = index
+    // 3. Longest Substring Without Repeating Characters
+    //
+    // Given a string s, find the length of the longest substring without repeating characters.
+    
+    func lengthOfLongestSubstring(_ s: String) -> Int {
+        // 1. Создаем счетчик в каторый будем записывать максимальное колличество уникальной подстроки
+        var maxCount = 0
+        // 2. Создаем хранилище в котором будем собирать уникальную подстроку
+        var str: [Character] = []
+        
+        for char in s {
+            // 3. Проверяем есть ли в нашем хранилище уже такой Chatracter и если да то получаем его индекс
+            if let index = str.firstIndex(of: char) {
+                // 4. Удаляем все в уникальной строке от начала до этого индекса
+                str.removeSubrange(0...index)
             }
+            // 5. Добавляем в строку Chatracter если он уникальный
+            str += String(char)
+            // 6. Обновляем счетчик с максимальным колличеством
+            maxCount = max(maxCount, str.count)
         }
-        return []
+        return maxCount
     }
 }
 
 let soution = Solution()
-print(soution.twoSum([2,4,8,11], 6))
+print(soution.lengthOfLongestSubstring("abcabcbb"))
