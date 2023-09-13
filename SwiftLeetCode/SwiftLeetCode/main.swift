@@ -8,25 +8,39 @@
 import Foundation
 
 struct Solution {
-    // 14. Longest Common Prefix
+    // 135. Candy
     //
-    // Write a function to find the longest common prefix string amongst an array of strings.
-    // If there is no common prefix, return an empty string "".
+    // There are n children standing in a line. Each child is assigned a rating value given in the integer array ratings.
+    // You are giving candies to these children subjected to the following requirements:
+    // Each child must have at least one candy.
+    // Children with a higher rating get more candies than their neighbors.
+    // Return the minimum number of candies you need to have to distribute the candies to the children.
     
-    func longestCommonPrefix(_ strs: [String]) -> String {
-        // 1. Берем любую строку для проверки содержиться ли она в других словах
-        var str = strs[0]
-        for word in strs {
-            // 2. Если наша строка не содержиться то удаляем последний из строки пока не найдем ту часть которая есть в этом слове
-            // Пример ищем в слове FLOW префикс FLOWER его нет и мы удаляем по одной букве пока не дойдем до FLOW
-            // Как только нашли переходим к след слову и т.д.
-            while !word.hasPrefix(str) {
-                str = String(str.dropLast())
+    func candy(_ ratings: [Int]) -> Int {
+        // 1. Мы создаем массив где у каждого в самом начале будет по одной конфете
+        var result: [Int] = Array(repeating: 1, count: ratings.count)
+        
+        // 2. ПЕрвым циклом мы проходимся по нашему массиву с лева на право
+        for i in 1..<result.count {
+            // 3. Если рейтинг нашего правого соседа больше, то мы устанавливаем
+            // ему число конфет на 1 больше чем у правого соседа
+            if ratings[i - 1] < ratings[i] {
+                result[i] = result[i - 1] + 1
             }
         }
-        return str
+        // 4. Таким образом после первого прохода мы получаем массив [1, 1, 1, 2, 3]
+        // 5. Теперь проходимся по массиву с права на лево
+        for i in 1..<result.count {
+            let index = result.count - i - 1
+            // 6. Если рейтинг нашего правого левого больше, то мы устанавливаем
+            // ему число конфет на 1 больше чем у левого соседа
+            if ratings[index] > ratings[index + 1] {
+                result[index] = max(result[index], result[index + 1] + 1)
+            }
+        }
+        return result.reduce(0, +)
     }
 }
 
 let soution = Solution()
-print(soution.longestCommonPrefix(["flower", "flow", "flight"]))
+print(soution.candy([7, 5, 2, 3, 8]))
