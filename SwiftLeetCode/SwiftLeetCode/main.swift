@@ -8,30 +8,25 @@
 import Foundation
 
 struct Solution {
-    // 3. Longest Substring Without Repeating Characters
+    // 14. Longest Common Prefix
     //
-    // Given a string s, find the length of the longest substring without repeating characters.
+    // Write a function to find the longest common prefix string amongst an array of strings.
+    // If there is no common prefix, return an empty string "".
     
-    func lengthOfLongestSubstring(_ s: String) -> Int {
-        // 1. Создаем счетчик в каторый будем записывать максимальное колличество уникальной подстроки
-        var maxCount = 0
-        // 2. Создаем хранилище в котором будем собирать уникальную подстроку
-        var str: [Character] = []
-        
-        for char in s {
-            // 3. Проверяем есть ли в нашем хранилище уже такой Chatracter и если да то получаем его индекс
-            if let index = str.firstIndex(of: char) {
-                // 4. Удаляем все в уникальной строке от начала до этого индекса
-                str.removeSubrange(0...index)
+    func longestCommonPrefix(_ strs: [String]) -> String {
+        // 1. Берем любую строку для проверки содержиться ли она в других словах
+        var str = strs[0]
+        for word in strs {
+            // 2. Если наша строка не содержиться то удаляем последний из строки пока не найдем ту часть которая есть в этом слове
+            // Пример ищем в слове FLOW префикс FLOWER его нет и мы удаляем по одной букве пока не дойдем до FLOW
+            // Как только нашли переходим к след слову и т.д.
+            while !word.hasPrefix(str) {
+                str = String(str.dropLast())
             }
-            // 5. Добавляем в строку Chatracter если он уникальный
-            str += String(char)
-            // 6. Обновляем счетчик с максимальным колличеством
-            maxCount = max(maxCount, str.count)
         }
-        return maxCount
+        return str
     }
 }
 
 let soution = Solution()
-print(soution.lengthOfLongestSubstring("abcabcbb"))
+print(soution.longestCommonPrefix(["flower", "flow", "flight"]))
